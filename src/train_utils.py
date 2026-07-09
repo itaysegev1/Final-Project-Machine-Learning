@@ -17,7 +17,7 @@ from sklearn.metrics import (
     roc_curve,
 )
 
-from src._constants import RANDOM_STATE  # re-exported from here for convenience
+from src._constants import RANDOM_STATE
 from src.preprocessing import build_preprocessed_datasets
 
 

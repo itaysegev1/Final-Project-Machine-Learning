@@ -26,7 +26,6 @@ PREFERRED_ORDER = (
 )
 
 
-# Loading
 def load_metrics_files(results_dir):
     """
     reads every results/<slug>/metrics.json into a list of dicts
@@ -131,7 +130,6 @@ def build_summary_dataframe(results_dir=RESULTS_DIR):
     return pd.DataFrame([row_from_payload(p) for p in payloads])
 
 
-# Cross-model verdict
 def _print_linear_vs_nonlinear_verdict(payloads, meaningful=0.01):
     """
     compares RF and MLP against the LR baseline on the Advanced set
@@ -147,7 +145,7 @@ def _print_linear_vs_nonlinear_verdict(payloads, meaningful=0.01):
     print("\n" + "=" * 72)
     print("  CROSS-MODEL NOTE — Linear baseline vs Non-linear models")
     print("=" * 72)
-    print(f"\n  Reference (calibrated linear): LR Advanced   "
+    print(f"\n  Reference (calibrated linear): \nLR Advanced   "
           f"Acc {lr_advanced['accuracy']:.4f}   F1 {lr_advanced['f1']:.4f}")
 
     def _line(label, payload):

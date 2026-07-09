@@ -18,9 +18,9 @@ from src.data_foundation import (
 
 
 NUMERIC_COLUMNS = ("calories", "protein", "fat", "sodium")
-TEXT_COLUMNS = ("directions", "ingredients")
+TEXT_COLUMNS = ("directions", "ingredients", "categories")
 
-# dropped only if they exist (defensive). the csv "date" tag column is kept
+# dropped only if they exist, the csv "date" tag column is kept
 DROP_IF_PRESENT = ("title", "desc", "categories")
 
 # the 3 numeric culinary features that need scaling, the 6 has_* pass as is

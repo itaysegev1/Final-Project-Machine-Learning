@@ -11,15 +11,12 @@ import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.model_selection import train_test_split
 
-
-# the data paths are taken from the project root (the parent of src/) so the
-# import works from every folder
 _PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(_PROJECT_ROOT, "data")
 CSV_PATH = os.path.join(DATA_DIR, "epi_r.csv")
 JSON_PATH = os.path.join(DATA_DIR, "full_format_recipes.json")
 
-RATING_THRESHOLD = 4.0  # >= 4.0 -> "Hit" (1)
+RATING_THRESHOLD = 4.0  # >= 4.0 = "Hit" (1)
 TEST_SIZE = 0.20        # 80 / 20 split
 from src._constants import RANDOM_STATE
 
@@ -296,54 +293,40 @@ class CulinaryFeatureExtractor(BaseEstimator, TransformerMixin):
 # (like "smoke") because the groups describe overlapping ideas, not a partition
 CULINARY_KEYWORDS = {
     "high_heat_techniques": (
-        "sear", "saute", "sauté", "broil", "stir-fry", "pan-fry", "grill",
-        "deep-fry", "blanch", "char", "blacken", "flambe", "flambé",
-        "flash-fry", "scald", "scorch", "blister", "wok-fry", "sear-roast",
+        "sear", "saute", "sauté", "broil", "stir-fry", "pan-fry", "grill", "deep-fry", "blanch", "char", "blacken",
+        "flambe", "flambé", "flash-fry", "scald", "scorch", "blister", "wok-fry", "sear-roast",
     ),
     "low_and_slow_techniques": (
-        "sous vide", "confit", "braise", "slow-roast", "simmer", "stew",
-        "poach", "sweat", "render", "coddle", "steep", "infuse",
-        "barbecue", "bbq", "smoke", "baste", "slow-cook", "roast",
+        "sous vide", "confit", "braise", "slow-roast", "simmer", "stew", "poach", "sweat", "render", "coddle",
+        "steep", "infuse", "barbecue", "bbq", "smoke", "baste", "slow-cook", "roast",
     ),
     "technical_execution": (
-        "temper", "emulsify", "deglaze", "clarify", "monter au beurre",
-        "puree", "purée", "strain", "knead", "muddle", "macerate", "score",
-        "dredge", "whip", "skim", "butterfly", "truss", "chiffonade",
-        "supreme", "debone", "fillet", "zest", "bind", "thicken", "mount",
-        "crimp", "pipe", "julienne", "brunoise", "batonnet", "oblique",
-        "paysanne", "shave", "mandoline", "mortar and pestle",
-        "ice-cream maker", "spice mill", "double boiler",
-        "candy thermometer", "deep-fat thermometer", "steamer insert",
-        "dariole molds", "springform pan", "dutch oven", "cleaver",
-        "blowtorch", "piping bag", "immersion circulator",
-        "sous vide machine", "vacuum sealer", "proof", "punch down",
-        "blind bake", "dock", "flute", "laminate", "bloom", "prove",
+        "temper", "emulsify", "deglaze", "clarify", "monter au beurre", "puree", "purée", "strain", "knead",
+        "muddle", "macerate", "score", "dredge", "whip", "skim", "butterfly", "truss", "chiffonade", "supreme",
+        "debone", "fillet", "zest", "bind", "thicken", "mount",  "crimp", "pipe", "julienne", "brunoise", "batonnet",
+        "oblique", "paysanne", "shave", "mandoline", "mortar and pestle", "ice-cream maker", "spice mill",
+        "double boiler", "candy thermometer", "deep-fat thermometer", "steamer insert", "dariole molds",
+        "springform pan", "dutch oven", "cleaver", "blowtorch", "piping bag", "immersion circulator","sous vide machine",
+        "vacuum sealer", "proof", "punch down", "blind bake", "dock", "flute", "laminate", "bloom", "prove",
     ),
     "prep_and_patience": (
-        "marinate", "brine", "ferment", "overnight", "rest", "cure",
-        "soak", "rise", "proof", "age", "pickle", "steep", "dry-rub",
-        "bloom", "activate", "temper",
+        "marinate", "brine", "ferment", "overnight", "rest", "cure", "soak", "rise", "proof", "age", "pickle", "steep",
+        "dry-rub", "bloom", "activate", "temper",
     ),
     "flavor_development": (
-        "reduce", "caramelize", "smoke", "jus", "char", "glaze", "infuse",
-        "zest", "baste", "sweat", "render", "extract", "curing",
-        "smoke-infuse", "dry-roast", "aioli", "hollandaise", "bearnaise",
-        "bechamel", "veloute", "espagnole", "demi-glace", "roux", "slurry",
-        "chutney", "compote", "pesto", "chimichurri", "gastrique",
+        "reduce", "caramelize", "smoke", "jus", "char", "glaze", "infuse", "zest", "baste", "sweat", "render",
+        "extract", "curing", "smoke-infuse", "dry-roast", "aioli", "hollandaise", "bearnaise", "bechamel", "veloute",
+        "espagnole", "demi-glace", "roux", "slurry", "chutney", "compote", "pesto", "chimichurri", "gastrique",
         "coulis", "gremolata", "mignonette", "compound butter",
     ),
     "premium_ingredients": (
-        "truffle", "truffles", "saffron", "bone marrow", "wagyu", "caviar",
-        "dry-aged", "foie gras", "kobe", "edible gold", "vanilla bean",
-        "chanterelle", "morel", "porcini", "lobster", "langoustine",
-        "oyster", "scallops", "prosciutto", "iberico", "quail",
-        "duck breast", "sweetbreads", "duck confit", "cognac", "armagnac",
-        "pancetta", "guanciale", "uni", "bottarga", "matsutake", "beluga",
-        "fish sauce", "oyster sauce", "hoisin", "sriracha", "gochujang",
-        "miso", "mirin", "sake", "tahini", "curry paste", "garam masala",
-        "harissa", "zaatar", "sumac", "tamarind", "preserved lemon",
-        "chipotle", "ancho", "guajillo", "masa", "tomatillo", "dashi",
-        "katsuobushi",
+        "truffle", "truffles", "saffron", "bone marrow", "wagyu", "caviar", "dry-aged", "foie gras", "kobe",
+        "edible gold", "vanilla bean", "chanterelle", "morel", "porcini", "lobster", "langoustine",
+        "oyster", "scallops", "prosciutto", "iberico", "quail", "duck breast", "sweetbreads", "duck confit", "cognac",
+        "armagnac", "pancetta", "guanciale", "uni", "bottarga", "matsutake", "beluga", "fish sauce", "oyster sauce",
+        "hoisin", "sriracha", "gochujang", "miso", "mirin", "sake", "tahini", "curry paste", "garam masala",
+        "harissa", "zaatar", "sumac", "tamarind", "preserved lemon", "chipotle", "ancho", "guajillo", "masa",
+        "tomatillo", "dashi", "katsuobushi",
     ),
 }
 
