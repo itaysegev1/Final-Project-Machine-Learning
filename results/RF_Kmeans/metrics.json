@@ -1,0 +1,63 @@
+{
+  "model_name": "RF with Kmeans",
+  "display_name": "Random Forest with Kmeans features",
+  "model_config": {
+    "random_forest": {
+      "n_estimators": 200,
+      "n_jobs": -1,
+      "random_state": 42
+    },
+    "n_clusters": 3
+  },
+  "n_train": 14578,
+  "n_test": 3645,
+  "random_state": 42,
+  "datasets": {
+    "Baseline": {
+      "accuracy": 0.5986282578875172,
+      "f1": 0.6560075241006349,
+      "confusion_matrix": {
+        "tn": 787,
+        "fp": 911,
+        "fn": 552,
+        "tp": 1395
+      },
+      "fp_rate": 0.5365135453474676,
+      "fn_rate": 0.2835130970724191
+    },
+    "Advanced": {
+      "accuracy": 0.613443072702332,
+      "f1": 0.6642840123898023,
+      "confusion_matrix": {
+        "tn": 842,
+        "fp": 856,
+        "fn": 553,
+        "tp": 1394
+      },
+      "fp_rate": 0.5041224970553593,
+      "fn_rate": 0.2840267077555213
+    }
+  },
+  "extras": {
+    "reference_no_clusters": {
+      "Baseline": {
+        "accuracy": 0.6041152263374485,
+        "f1": 0.6565103546774578
+      },
+      "Advanced": {
+        "accuracy": 0.6238683127572017,
+        "f1": 0.6753492777646223
+      }
+    },
+    "cluster_columns_effect": {
+      "Baseline": {
+        "accuracy": -0.005486968449931351,
+        "f1": -0.0005028305768228769
+      },
+      "Advanced": {
+        "accuracy": -0.010425240054869667,
+        "f1": -0.01106526537482
+      }
+    }
+  }
+}
