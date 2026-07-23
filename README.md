@@ -31,6 +31,8 @@ features — to see whether the engineered features help.
 ├── train_pca_knn_improved.py
 ├── train_random_forest.py
 ├── train_mlp.py                   also supports --no-early-stopping (overfit baseline)
+├── train_Kmeans.py                Added After coversation with the superviser
+├── train_rf_with_Kmeans.py        Added After coversation with the superviser
 │
 ├── evaluate_all_results.py        reads every metrics.json, prints the summary table
 ├── analysis.py                    Logistic Regression coefficients + confidence buckets
